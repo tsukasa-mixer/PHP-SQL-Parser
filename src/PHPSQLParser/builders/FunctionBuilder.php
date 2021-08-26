@@ -105,7 +105,13 @@ class FunctionBuilder implements Builder {
         }
 
         $sql = "";
+        $lastItemK = count($parsed['sub_tree']) - 1;
+        
         foreach ($parsed['sub_tree'] as $k => $v) {
+            if ($k == $lastItemK && !empty($v['sub_tree'][1]) && $v['sub_tree'][1]['base_expr'] == ')') {
+                unset($v['sub_tree'][1]);
+            }
+            
             $len = strlen($sql);
             $sql .= $this->build($v);
             $sql .= $this->buildConstant($v);
