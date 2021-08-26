@@ -92,6 +92,11 @@ class FunctionBuilder implements Builder {
         $builder = new SubQueryBuilder();
         return $builder->build($parsed);
     }
+
+    protected function buildUserVariables($parsed) {
+        $builder = new UserVariableBuilder();
+        return $builder->build($parsed);
+    }
     
     public function build(array $parsed) {
         if (($parsed['expr_type'] !== ExpressionType::AGGREGATE_FUNCTION)
@@ -120,6 +125,7 @@ class FunctionBuilder implements Builder {
             $sql .= $this->buildReserved($v);
             $sql .= $this->buildSelectBracketExpression($v);
             $sql .= $this->buildSelectExpression($v);
+            $sql .= $this->buildUserVariables($v);
 
             if ($len == strlen($sql)) {
                 throw new UnableToCreateSQLException('function subtree', $k, $v, 'expr_type');
