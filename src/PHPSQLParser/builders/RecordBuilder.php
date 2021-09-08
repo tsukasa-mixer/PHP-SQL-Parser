@@ -31,49 +31,32 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  * @version   SVN: $Id$
- * 
+ *
  */
 
 namespace PHPSQLParser\builders;
+
 use PHPSQLParser\exceptions\UnableToCreateSQLException;
 use PHPSQLParser\utils\ExpressionType;
 
 /**
- * This class implements the builder for the records within INSERT statement. 
+ * This class implements the builder for the records within INSERT statement.
  * You can overwrite all functions to achieve another handling.
  *
  * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
+ *
  */
-class RecordBuilder implements Builder {
+class RecordBuilder implements Builder
+{
 
-    protected function buildOperator($parsed) {
-        $builder = new OperatorBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildFunction($parsed) {
-        $builder = new FunctionBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildConstant($parsed) {
-        $builder = new ConstantBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildColRef($parsed) {
-        $builder = new ColumnReferenceBuilder();
-        return $builder->build($parsed);
-    }
-    
-    public function build(array $parsed) {
+    public function build(array $parsed)
+    {
         if ($parsed['expr_type'] !== ExpressionType::RECORD) {
             return isset($parsed['base_expr']) ? $parsed['base_expr'] : '';
         }
@@ -95,5 +78,28 @@ class RecordBuilder implements Builder {
         return "(" . $sql . ")";
     }
 
+    protected function buildConstant($parsed)
+    {
+        $builder = new ConstantBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildFunction($parsed)
+    {
+        $builder = new FunctionBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildOperator($parsed)
+    {
+        $builder = new OperatorBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildColRef($parsed)
+    {
+        $builder = new ColumnReferenceBuilder();
+        return $builder->build($parsed);
+    }
+
 }
-?>

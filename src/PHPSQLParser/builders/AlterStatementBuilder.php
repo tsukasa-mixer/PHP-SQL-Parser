@@ -1,11 +1,13 @@
 <?php
+
 namespace PHPSQLParser\builders;
 
 class AlterStatementBuilder implements Builder
 {
-    protected function buildSubTree($parsed) {
-        $builder = new SubTreeBuilder();
-        return $builder->build($parsed);
+    public function build(array $parsed)
+    {
+        $alter = $parsed['ALTER'];
+        return $this->buildAlter($alter);
     }
 
     private function buildAlter($parsed)
@@ -14,11 +16,9 @@ class AlterStatementBuilder implements Builder
         return $builder->build($parsed);
     }
 
-    public function build(array $parsed)
+    protected function buildSubTree($parsed)
     {
-        $alter = $parsed['ALTER'];
-        $sql = $this->buildAlter($alter);
-
-        return $sql;
+        $builder = new SubTreeBuilder();
+        return $builder->build($parsed);
     }
 }

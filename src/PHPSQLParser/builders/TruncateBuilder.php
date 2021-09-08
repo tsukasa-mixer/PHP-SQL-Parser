@@ -31,12 +31,12 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  * @version   SVN: $Id$
- * 
+ *
  */
 
 namespace PHPSQLParser\builders;
@@ -47,11 +47,13 @@ namespace PHPSQLParser\builders;
  *
  * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
+ *
  */
-class TruncateBuilder implements Builder {
+class TruncateBuilder implements Builder
+{
 
-    public function build(array $parsed) {
+    public function build(array $parsed)
+    {
         $sql = "TRUNCATE TABLE ";
         $right = -1;
 
@@ -68,4 +70,4 @@ class TruncateBuilder implements Builder {
         return substr($sql, 0, $right);
     }
 }
-?>
+

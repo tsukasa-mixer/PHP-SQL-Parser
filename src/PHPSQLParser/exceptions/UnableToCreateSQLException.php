@@ -32,14 +32,16 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  * @version   SVN: $Id$
- * 
+ *
  */
+
 namespace PHPSQLParser\exceptions;
+
 use Exception;
 
 /**
@@ -50,16 +52,18 @@ use Exception;
  *
  * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
+ *
  */
-class UnableToCreateSQLException extends Exception {
+class UnableToCreateSQLException extends Exception
+{
 
     protected $part;
     protected $partkey;
     protected $entry;
     protected $entrykey;
 
-    public function __construct($part, $partkey, $entry, $entrykey) {
+    public function __construct($part, $partkey, $entry, $entrykey)
+    {
         $this->part = $part;
         $this->partkey = $partkey;
         $this->entry = $entry;
@@ -68,21 +72,23 @@ class UnableToCreateSQLException extends Exception {
             "unknown [" . $entrykey . "] = " . $entry[$entrykey] . " in \"" . $part . "\" [" . $partkey . "] ", 15);
     }
 
-    public function getEntry() {
+    public function getEntry()
+    {
         return $this->entry;
     }
 
-    public function getEntryKey() {
+    public function getEntryKey()
+    {
         return $this->entrykey;
     }
 
-    public function getSQLPart() {
+    public function getSQLPart()
+    {
         return $this->part;
     }
 
-    public function getSQLPartKey() {
+    public function getSQLPartKey()
+    {
         return $this->partkey;
     }
 }
-
-?>

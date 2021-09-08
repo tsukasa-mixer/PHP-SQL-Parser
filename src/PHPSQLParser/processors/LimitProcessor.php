@@ -43,31 +43,33 @@ namespace PHPSQLParser\processors;
 
 /**
  * This class processes the LIMIT statements.
- * 
+ *
  * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * 
+ *
  */
-class LimitProcessor extends AbstractProcessor {
+class LimitProcessor extends AbstractProcessor
+{
 
-    public function process($tokens) {
+    public function process($tokens)
+    {
         $rowcount = "";
         $offset = "";
 
         $comma = -1;
         $exchange = false;
-        
+
         $comments = array();
-        
+
         foreach ($tokens as &$token) {
             if ($this->isCommentToken($token)) {
-                 $comments[] = parent::processComment($token);
-                 $token = '';
+                $comments[] = parent::processComment($token);
+                $token = '';
             }
         }
-        
-        for ($i = 0; $i < count($tokens); ++$i) {
-            $trim = strtoupper(trim($tokens[$i]));
+
+        foreach ($tokens as $i => $iValue) {
+            $trim = strtoupper(trim($iValue));
             if ($trim === ",") {
                 $comma = $i;
                 break;
@@ -102,4 +104,3 @@ class LimitProcessor extends AbstractProcessor {
         return $return;
     }
 }
-?>

@@ -31,6 +31,7 @@
  */
 
 namespace PHPSQLParser\processors;
+
 use PHPSQLParser\utils\ExpressionType;
 
 /**
@@ -40,19 +41,16 @@ use PHPSQLParser\utils\ExpressionType;
  * @author arothe
  *
  */
-class SelectExpressionProcessor extends AbstractProcessor {
-
-    protected function processExpressionList($unparsed) {
-        $processor = new ExpressionListProcessor($this->options);
-        return $processor->process($unparsed);
-    }
+class SelectExpressionProcessor extends AbstractProcessor
+{
 
     /**
      * This fuction processes each SELECT clause.
      * We determine what (if any) alias
      * is provided, and we set the type of expression.
      */
-    public function process($expression) {
+    public function process($expression)
+    {
         $tokens = $this->splitSQLIntoTokens($expression);
         $token_count = count($tokens);
         if ($token_count === 0) {
@@ -70,8 +68,8 @@ class SelectExpressionProcessor extends AbstractProcessor {
         $alias = false;
         $processed = false;
 
-        for ($i = 0; $i < $token_count; ++$i) {
-            $token = $tokens[$i];
+        foreach ($tokens as $i => $iValue) {
+            $token = $iValue;
             $upper = strtoupper($token);
 
             if ($upper === 'AS') {
@@ -115,19 +113,27 @@ class SelectExpressionProcessor extends AbstractProcessor {
         // it can be an alias without an AS
         $last = array_pop($stripped);
         if (!$alias && $this->isColumnReference($last)) {
-
             // TODO: it can be a comment, don't use array_pop
 
             // check the token before the colref
             $prev = array_pop($stripped);
 
-            if ($this->isReserved($prev) || $this->isConstant($prev) || $this->isAggregateFunction($prev)
-                    || $this->isFunction($prev) || $this->isExpression($prev) || $this->isSubQuery($prev)
-                    || $this->isColumnReference($prev) || $this->isBracketExpression($prev)|| $this->isCustomFunction($prev)) {
-
-                $alias = array('as' => false, 'name' => trim($last['base_expr']),
-                               'no_quotes' => $this->revokeQuotation($last['base_expr']),
-                               'base_expr' => trim($last['base_expr']));
+            if ($this->isReserved($prev)
+                || $this->isConstant($prev)
+                || $this->isAggregateFunction($prev)
+                || $this->isFunction($prev)
+                || $this->isExpression($prev)
+                || $this->isSubQuery($prev)
+                || $this->isColumnReference($prev)
+                || $this->isBracketExpression($prev)
+                || $this->isCustomFunction($prev)
+            ) {
+                $alias = array(
+                    'as' => false,
+                    'name' => trim($last['base_expr']),
+                    'no_quotes' => $this->revokeQuotation($last['base_expr']),
+                    'base_expr' => trim($last['base_expr'])
+                );
                 // remove the last token
                 array_pop($tokens);
             }
@@ -141,13 +147,11 @@ class SelectExpressionProcessor extends AbstractProcessor {
         // if there is only one part, we copy the expr_type
         // in all other cases we use "EXPRESSION" as global type
         $type = ExpressionType::EXPRESSION;
-        if (count($processed) === 1) {
-            if (!$this->isSubQuery($processed[0])) {
-                $type = $processed[0]['expr_type'];
-                $base_expr = $processed[0]['base_expr'];
-                $no_quotes = isset($processed[0]['no_quotes']) ? $processed[0]['no_quotes'] : null;
-                $processed = $processed[0]['sub_tree']; // it can be FALSE
-            }
+        if ((count($processed) === 1) && !$this->isSubQuery($processed[0])) {
+            $type = $processed[0]['expr_type'];
+            $base_expr = $processed[0]['base_expr'];
+            $no_quotes = isset($processed[0]['no_quotes']) ? $processed[0]['no_quotes'] : null;
+            $processed = $processed[0]['sub_tree']; // it can be FALSE
         }
 
         $result = array();
@@ -161,5 +165,10 @@ class SelectExpressionProcessor extends AbstractProcessor {
         return $result;
     }
 
+    protected function processExpressionList($unparsed)
+    {
+        $processor = new ExpressionListProcessor($this->options);
+        return $processor->process($unparsed);
+    }
+
 }
-?>

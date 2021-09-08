@@ -40,6 +40,7 @@
  */
 
 namespace PHPSQLParser\builders;
+
 use PHPSQLParser\exceptions\UnableToCreateSQLException;
 
 /**
@@ -50,59 +51,11 @@ use PHPSQLParser\exceptions\UnableToCreateSQLException;
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  *
  */
-class WhereBuilder implements Builder {
+class WhereBuilder implements Builder
+{
 
-    protected function buildColRef($parsed) {
-        $builder = new ColumnReferenceBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildConstant($parsed) {
-        $builder = new ConstantBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildOperator($parsed) {
-        $builder = new OperatorBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildFunction($parsed) {
-        $builder = new FunctionBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildSubQuery($parsed) {
-        $builder = new SubQueryBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildInList($parsed) {
-        $builder = new InListBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildWhereExpression($parsed) {
-        $builder = new WhereExpressionBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildWhereBracketExpression($parsed) {
-        $builder = new WhereBracketExpressionBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildUserVariable($parsed) {
-        $builder = new UserVariableBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildReserved($parsed) {
-      $builder = new ReservedBuilder();
-      return $builder->build($parsed);
-    }
-
-    public function build(array $parsed) {
+    public function build(array $parsed)
+    {
         $sql = "WHERE ";
         foreach ($parsed as $k => $v) {
             $len = strlen($sql);
@@ -117,7 +70,7 @@ class WhereBuilder implements Builder {
             $sql .= $this->buildWhereBracketExpression($v);
             $sql .= $this->buildUserVariable($v);
             $sql .= $this->buildReserved($v);
-            
+
             if (strlen($sql) == $len) {
                 throw new UnableToCreateSQLException('WHERE', $k, $v, 'expr_type');
             }
@@ -127,5 +80,64 @@ class WhereBuilder implements Builder {
         return substr($sql, 0, -1);
     }
 
+    protected function buildOperator($parsed)
+    {
+        $builder = new OperatorBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildConstant($parsed)
+    {
+        $builder = new ConstantBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildColRef($parsed)
+    {
+        $builder = new ColumnReferenceBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildSubQuery($parsed)
+    {
+        $builder = new SubQueryBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildInList($parsed)
+    {
+        $builder = new InListBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildFunction($parsed)
+    {
+        $builder = new FunctionBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildWhereExpression($parsed)
+    {
+        $builder = new WhereExpressionBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildWhereBracketExpression($parsed)
+    {
+        $builder = new WhereBracketExpressionBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildUserVariable($parsed)
+    {
+        $builder = new UserVariableBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildReserved($parsed)
+    {
+        $builder = new ReservedBuilder();
+        return $builder->build($parsed);
+    }
+
 }
-?>

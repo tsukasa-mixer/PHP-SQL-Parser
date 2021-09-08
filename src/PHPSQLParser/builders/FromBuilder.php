@@ -40,6 +40,7 @@
  */
 
 namespace PHPSQLParser\builders;
+
 use PHPSQLParser\exceptions\UnableToCreateSQLException;
 
 /**
@@ -50,24 +51,11 @@ use PHPSQLParser\exceptions\UnableToCreateSQLException;
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  *
  */
-class FromBuilder implements Builder {
+class FromBuilder implements Builder
+{
 
-    protected function buildTable($parsed, $key) {
-        $builder = new TableBuilder();
-        return $builder->build($parsed, $key);
-    }
-
-    protected function buildTableExpression($parsed, $key) {
-        $builder = new TableExpressionBuilder();
-        return $builder->build($parsed, $key);
-    }
-
-    protected function buildSubQuery($parsed, $key) {
-        $builder = new SubQueryBuilder();
-        return $builder->build($parsed, $key);
-    }
-
-    public function build(array $parsed) {
+    public function build(array $parsed)
+    {
         $sql = "";
         if (array_key_exists("UNION ALL", $parsed) || array_key_exists("UNION", $parsed)) {
             foreach ($parsed as $union_type => $outer_v) {
@@ -76,8 +64,7 @@ class FromBuilder implements Builder {
                 foreach ($outer_v as $item) {
                     if (!$first) {
                         $sql .= " $union_type ";
-                    }
-                    else {
+                    } else {
                         $first = false;
                     }
 
@@ -91,8 +78,7 @@ class FromBuilder implements Builder {
                     }
                 }
             }
-        }
-        else {
+        } else {
             foreach ($parsed as $k => $v) {
                 $len = strlen($sql);
                 $sql .= $this->buildTable($v, $k);
@@ -106,5 +92,22 @@ class FromBuilder implements Builder {
         }
         return "FROM " . $sql;
     }
+
+    protected function buildTable($parsed, $key)
+    {
+        $builder = new TableBuilder();
+        return $builder->build($parsed, $key);
+    }
+
+    protected function buildTableExpression($parsed, $key)
+    {
+        $builder = new TableExpressionBuilder();
+        return $builder->build($parsed, $key);
+    }
+
+    protected function buildSubQuery($parsed, $key)
+    {
+        $builder = new SubQueryBuilder();
+        return $builder->build($parsed, $key);
+    }
 }
-?>

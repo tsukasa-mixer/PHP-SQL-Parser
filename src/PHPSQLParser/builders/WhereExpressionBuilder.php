@@ -40,6 +40,7 @@
  */
 
 namespace PHPSQLParser\builders;
+
 use PHPSQLParser\exceptions\UnableToCreateSQLException;
 use PHPSQLParser\utils\ExpressionType;
 
@@ -51,58 +52,16 @@ use PHPSQLParser\utils\ExpressionType;
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  *
  */
-class WhereExpressionBuilder implements Builder {
+class WhereExpressionBuilder implements Builder
+{
 
-    protected function buildColRef($parsed) {
-        $builder = new ColumnReferenceBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildConstant($parsed) {
-        $builder = new ConstantBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildOperator($parsed) {
-        $builder = new OperatorBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildFunction($parsed) {
-        $builder = new FunctionBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildInList($parsed) {
-        $builder = new InListBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildWhereExpression($parsed) {
+    protected function buildWhereExpression($parsed)
+    {
         return $this->build($parsed);
     }
 
-    protected function buildWhereBracketExpression($parsed) {
-        $builder = new WhereBracketExpressionBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildUserVariable($parsed) {
-        $builder = new UserVariableBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildSubQuery($parsed) {
-        $builder = new SubQueryBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildReserved($parsed) {
-      $builder = new ReservedBuilder();
-      return $builder->build($parsed);
-    }
-
-    public function build(array $parsed) {
+    public function build(array $parsed)
+    {
         if ($parsed['expr_type'] !== ExpressionType::EXPRESSION) {
             return "";
         }
@@ -131,5 +90,58 @@ class WhereExpressionBuilder implements Builder {
         return $sql;
     }
 
+    protected function buildColRef($parsed)
+    {
+        $builder = new ColumnReferenceBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildConstant($parsed)
+    {
+        $builder = new ConstantBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildOperator($parsed)
+    {
+        $builder = new OperatorBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildInList($parsed)
+    {
+        $builder = new InListBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildFunction($parsed)
+    {
+        $builder = new FunctionBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildWhereBracketExpression($parsed)
+    {
+        $builder = new WhereBracketExpressionBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildUserVariable($parsed)
+    {
+        $builder = new UserVariableBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildSubQuery($parsed)
+    {
+        $builder = new SubQueryBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildReserved($parsed)
+    {
+        $builder = new ReservedBuilder();
+        return $builder->build($parsed);
+    }
+
 }
-?>

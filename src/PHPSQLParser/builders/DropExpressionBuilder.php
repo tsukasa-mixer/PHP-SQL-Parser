@@ -31,15 +31,16 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  * @version   SVN: $Id$
- * 
+ *
  */
 
 namespace PHPSQLParser\builders;
+
 use PHPSQLParser\exceptions\UnableToCreateSQLException;
 use PHPSQLParser\utils\ExpressionType;
 
@@ -49,36 +50,43 @@ use PHPSQLParser\utils\ExpressionType;
  *
  * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
+ *
  */
-class DropExpressionBuilder implements Builder {
+class DropExpressionBuilder implements Builder
+{
 
-    protected function buildTable($parsed, $index) {
+    protected function buildTable($parsed, $index)
+    {
         $builder = new TableBuilder();
         return $builder->build($parsed, $index);
     }
 
-    protected function buildDatabase($parsed) {
+    protected function buildDatabase($parsed)
+    {
         $builder = new DatabaseBuilder();
         return $builder->build($parsed);
     }
 
-    protected function buildSchema($parsed) {
+    protected function buildSchema($parsed)
+    {
         $builder = new SchemaBuilder();
         return $builder->build($parsed);
     }
-    
-    protected function buildTemporaryTable($parsed) {
+
+    protected function buildTemporaryTable($parsed)
+    {
         $builder = new TempTableBuilder();
         return $builder->build($parsed);
     }
-    
-    protected function buildView($parsed) {
+
+    protected function buildView($parsed)
+    {
         $builder = new ViewBuilder();
         return $builder->build($parsed);
     }
-    
-    public function build(array $parsed) {
+
+    public function build(array $parsed)
+    {
         if ($parsed['expr_type'] !== ExpressionType::EXPRESSION) {
             return "";
         }
@@ -100,4 +108,3 @@ class DropExpressionBuilder implements Builder {
         return substr($sql, 0, -2);
     }
 }
-?>

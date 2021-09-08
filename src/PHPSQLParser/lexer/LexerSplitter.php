@@ -32,12 +32,12 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  * @version   SVN: $Id$
- * 
+ *
  */
 
 namespace PHPSQLParser\lexer;
@@ -49,80 +49,117 @@ namespace PHPSQLParser\lexer;
  *
  * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
+ *
  */
-class LexerSplitter {
+class LexerSplitter
+{
 
-    protected static $splitters = array("<=>", "\r\n", "!=", ">=", "<=", "<>", "<<", ">>", ":=", "\\", "&&", "||", ":=",
-                                       "/*", "*/", "--", ">", "<", "|", "=", "^", "(", ")", "\t", "\n", "'", "\"", "`",
-                                       ",", "@", " ", "+", "-", "*", "/", ";");
+    protected static $splitters = array(
+        "<=>",
+        "\r\n",
+        "!=",
+        ">=",
+        "<=",
+        "<>",
+        "<<",
+        ">>",
+        ":=",
+        "\\",
+        "&&",
+        "||",
+        ":=",
+        "/*",
+        "*/",
+        "--",
+        ">",
+        "<",
+        "|",
+        "=",
+        "^",
+        "(",
+        ")",
+        "\t",
+        "\n",
+        "'",
+        "\"",
+        "`",
+        ",",
+        "@",
+        " ",
+        "+",
+        "-",
+        "*",
+        "/",
+        ";",
+    );
 
-	/**
-	 * @var string Regex string pattern of splitters.
-	 */
+    /**
+     * @var string Regex string pattern of splitters.
+     */
     protected $splitterPattern;
 
     /**
      * Constructor.
-     * 
+     *
      * It initializes some fields.
      */
-    public function __construct() {
-        $this->splitterPattern = $this->convertSplittersToRegexPattern( self::$splitters );
+    public function __construct()
+    {
+        $this->splitterPattern = $this->convertSplittersToRegexPattern(self::$splitters);
     }
 
-	/**
-	 * Get the regex pattern string of all the splitters
-	 *
-	 * @return string
-	 */
-    public function getSplittersRegexPattern () {
-	    return $this->splitterPattern;
+    /**
+     * Convert an array of splitter tokens to a regex pattern string.
+     *
+     * @param array $splitters
+     *
+     * @return string
+     */
+    public function convertSplittersToRegexPattern($splitters)
+    {
+        $regex_parts = array();
+        foreach ($splitters as $part) {
+            $part = preg_quote($part);
+
+            switch ($part) {
+                case "\r\n":
+                    $part = '\r\n';
+                    break;
+                case "\t":
+                    $part = '\t';
+                    break;
+                case "\n":
+                    $part = '\n';
+                    break;
+                case " ":
+                    $part = '\s';
+                    break;
+                case "/":
+                    $part = "\/";
+                    break;
+                case "/\*":
+                    $part = "\/\*";
+                    break;
+                case "\*/":
+                    $part = "\*\/";
+                    break;
+            }
+
+            $regex_parts[] = $part;
+        }
+
+        $pattern = implode('|', $regex_parts);
+
+        return '/(' . $pattern . ')/';
     }
 
-	/**
-	 * Convert an array of splitter tokens to a regex pattern string.
-	 *
-	 * @param array $splitters
-	 *
-	 * @return string
-	 */
-    public function convertSplittersToRegexPattern( $splitters ) {
-	    $regex_parts = array();
-	    foreach ( $splitters as $part ) {
-		    $part = preg_quote( $part );
-
-		    switch ( $part ) {
-			    case "\r\n":
-				    $part = '\r\n';
-				    break;
-			    case "\t":
-				    $part = '\t';
-				    break;
-			    case "\n":
-				    $part = '\n';
-				    break;
-			    case " ":
-				    $part = '\s';
-				    break;
-			    case "/":
-				    $part = "\/";
-				    break;
-			    case "/\*":
-				    $part = "\/\*";
-				    break;
-			    case "\*/":
-				    $part = "\*\/";
-				    break;
-		    }
-
-		    $regex_parts[] = $part;
-	    }
-
-	    $pattern = implode( '|', $regex_parts );
-
-	    return '/(' . $pattern . ')/';
+    /**
+     * Get the regex pattern string of all the splitters
+     *
+     * @return string
+     */
+    public function getSplittersRegexPattern()
+    {
+        return $this->splitterPattern;
     }
 }
-
-?>
