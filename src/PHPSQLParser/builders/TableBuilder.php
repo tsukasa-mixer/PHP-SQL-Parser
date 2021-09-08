@@ -40,6 +40,7 @@
  */
 
 namespace PHPSQLParser\builders;
+
 use PHPSQLParser\utils\ExpressionType;
 
 /**
@@ -50,34 +51,11 @@ use PHPSQLParser\utils\ExpressionType;
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  *
  */
-class TableBuilder implements Builder {
+class TableBuilder implements Builder
+{
 
-    protected function buildAlias($parsed) {
-        $builder = new AliasBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildIndexHintList($parsed) {
-        $builder = new IndexHintListBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildJoin($parsed) {
-        $builder = new JoinBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildRefType($parsed) {
-        $builder = new RefTypeBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildRefClause($parsed) {
-        $builder = new RefClauseBuilder();
-        return $builder->build($parsed);
-    }
-
-    public function build(array $parsed, $index = 0) {
+    public function build(array $parsed, $index = 0)
+    {
         if ($parsed['expr_type'] !== ExpressionType::TABLE) {
             return '';
         }
@@ -93,5 +71,34 @@ class TableBuilder implements Builder {
         }
         return $sql;
     }
+
+    protected function buildAlias($parsed)
+    {
+        $builder = new AliasBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildIndexHintList($parsed)
+    {
+        $builder = new IndexHintListBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildJoin($parsed)
+    {
+        $builder = new JoinBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildRefType($parsed)
+    {
+        $builder = new RefTypeBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildRefClause($parsed)
+    {
+        $builder = new RefClauseBuilder();
+        return $builder->build($parsed);
+    }
 }
-?>

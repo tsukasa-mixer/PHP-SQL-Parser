@@ -40,6 +40,7 @@
  */
 
 namespace PHPSQLParser;
+
 use PHPSQLParser\positions\PositionCalculator;
 use PHPSQLParser\processors\DefaultProcessor;
 use PHPSQLParser\utils\PHPSQLParserConstants;
@@ -51,7 +52,8 @@ use PHPSQLParser\utils\PHPSQLParserConstants;
  * @author  André Rothe <arothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  */
-class PHPSQLParser {
+class PHPSQLParser
+{
 
     public $parsed;
 
@@ -64,11 +66,12 @@ class PHPSQLParser {
      * Constructor. It simply calls the parse() function.
      * Use the public variable $parsed to get the output.
      *
-     * @param String|bool  $sql           The SQL statement.
+     * @param String|bool $sql The SQL statement.
      * @param bool $calcPositions True, if the output should contain [position], false otherwise.
      * @param array $options
      */
-    public function __construct($sql = false, $calcPositions = false, array $options = array()) {
+    public function __construct($sql = false, $calcPositions = false, array $options = array())
+    {
         $this->options = new Options($options);
 
         if ($sql) {
@@ -84,12 +87,13 @@ class PHPSQLParser {
      * of the positions needs some time, if you don't need positions in
      * your application, set the parameter to false.
      *
-     * @param String  $sql           The SQL statement.
+     * @param String $sql The SQL statement.
      * @param boolean $calcPositions True, if the output should contain [position], false otherwise.
      *
      * @return array An associative array with all meta information about the SQL statement.
      */
-    public function parse($sql, $calcPositions = false) {
+    public function parse($sql, $calcPositions = false)
+    {
 
         $processor = new DefaultProcessor($this->options);
         $queries = $processor->process($sql);
@@ -112,7 +116,8 @@ class PHPSQLParser {
      *
      * @return null
      */
-    public function addCustomFunction($token) {
+    public function addCustomFunction($token)
+    {
         PHPSQLParserConstants::getInstance()->addCustomFunction($token);
     }
 
@@ -123,7 +128,8 @@ class PHPSQLParser {
      *
      * @return null
      */
-    public function removeCustomFunction($token) {
+    public function removeCustomFunction($token)
+    {
         PHPSQLParserConstants::getInstance()->removeCustomFunction($token);
     }
 
@@ -132,8 +138,8 @@ class PHPSQLParser {
      *
      * @return array Returns an array of all custom functions
      */
-    public function getCustomFunctions() {
+    public function getCustomFunctions()
+    {
         return PHPSQLParserConstants::getInstance()->getCustomFunctions();
     }
 }
-?>

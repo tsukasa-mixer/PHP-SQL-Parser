@@ -31,44 +31,32 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  * @version   SVN: $Id$
- * 
+ *
  */
 
 namespace PHPSQLParser\builders;
+
 use PHPSQLParser\exceptions\UnableToCreateSQLException;
 
 /**
- * This class implements the builder for the HAVING part. 
+ * This class implements the builder for the HAVING part.
  * You can overwrite all functions to achieve another handling.
  *
  * @author  Ian Barker <ian@theorganicagency.com>
  * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
+ *
  */
-class HavingBuilder extends WhereBuilder {
+class HavingBuilder extends WhereBuilder
+{
 
-    protected function buildAliasReference($parsed) {
-        $builder = new AliasReferenceBuilder();
-        return $builder->build($parsed);
-    }
-	
-	protected function buildHavingExpression($parsed) {
-        $builder = new HavingExpressionBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildHavingBracketExpression($parsed) {
-        $builder = new HavingBracketExpressionBuilder();
-        return $builder->build($parsed);
-    }
-
-    public function build(array $parsed) {
+    public function build(array $parsed)
+    {
         $sql = "HAVING ";
         foreach ($parsed as $k => $v) {
             $len = strlen($sql);
@@ -93,5 +81,22 @@ class HavingBuilder extends WhereBuilder {
         return substr($sql, 0, -1);
     }
 
+    protected function buildAliasReference($parsed)
+    {
+        $builder = new AliasReferenceBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildHavingExpression($parsed)
+    {
+        $builder = new HavingExpressionBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildHavingBracketExpression($parsed)
+    {
+        $builder = new HavingBracketExpressionBuilder();
+        return $builder->build($parsed);
+    }
+
 }
-?>

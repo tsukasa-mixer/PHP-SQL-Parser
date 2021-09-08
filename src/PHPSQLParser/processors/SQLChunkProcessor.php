@@ -48,17 +48,11 @@ namespace PHPSQLParser\processors;
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  *
  */
-class SQLChunkProcessor extends AbstractProcessor {
+class SQLChunkProcessor extends AbstractProcessor
+{
 
-    protected function moveLIKE(&$out) {
-        if (!isset($out['TABLE']['like'])) {
-            return;
-        }
-        $out = $this->array_insert_after($out, 'TABLE', array('LIKE' => $out['TABLE']['like']));
-        unset($out['TABLE']['like']);
-    }
-
-    public function process($out) {
+    public function process($out)
+    {
         if (!$out) {
             return false;
         }
@@ -71,8 +65,8 @@ class SQLChunkProcessor extends AbstractProcessor {
 
             unset($processedBracket[0]['remaining_expressions']);
 
-            if(!empty($remainingExpressions)) {
-                foreach($remainingExpressions as $key=>$expression) {
+            if (!empty($remainingExpressions)) {
+                foreach ($remainingExpressions as $key => $expression) {
                     $processedBracket[][$key] = $expression;
                 }
             }
@@ -188,11 +182,19 @@ class SQLChunkProcessor extends AbstractProcessor {
             $out['OPTIONS'] = $processor->process($out['OPTIONS']);
         }
         if (!empty($out['WITH'])) {
-        	$processor = new WithProcessor($this->options);
-        	$out['WITH'] = $processor->process($out['WITH']);
+            $processor = new WithProcessor($this->options);
+            $out['WITH'] = $processor->process($out['WITH']);
         }
 
         return $out;
     }
+
+    protected function moveLIKE(&$out)
+    {
+        if (!isset($out['TABLE']['like'])) {
+            return;
+        }
+        $out = $this->array_insert_after($out, 'TABLE', array('LIKE' => $out['TABLE']['like']));
+        unset($out['TABLE']['like']);
+    }
 }
-?>

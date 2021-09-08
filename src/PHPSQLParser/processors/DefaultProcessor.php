@@ -48,25 +48,11 @@ namespace PHPSQLParser\processors;
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  *
  */
-class DefaultProcessor extends AbstractProcessor {
+class DefaultProcessor extends AbstractProcessor
+{
 
-    protected function isUnion($tokens) {
-        return UnionProcessor::isUnion($tokens);
-    }
-
-    protected function processUnion($tokens) {
-        // this is the highest level lexical analysis. This is the part of the
-        // code which finds UNION and UNION ALL query parts
-        $processor = new UnionProcessor($this->options);
-        return $processor->process($tokens);
-    }
-
-    protected function processSQL($tokens) {
-        $processor = new SQLProcessor($this->options);
-        return $processor->process($tokens);
-    }
-
-    public function process($sql) {
+    public function process($sql)
+    {
 
         $inputArray = $this->splitSQLIntoTokens($sql);
         $queries = $this->processUnion($inputArray);
@@ -80,9 +66,27 @@ class DefaultProcessor extends AbstractProcessor {
         return $queries;
     }
 
-    public function revokeQuotation($sql) {
+    protected function processUnion($tokens)
+    {
+        // this is the highest level lexical analysis. This is the part of the
+        // code which finds UNION and UNION ALL query parts
+        $processor = new UnionProcessor($this->options);
+        return $processor->process($tokens);
+    }
+
+    protected function isUnion($tokens)
+    {
+        return UnionProcessor::isUnion($tokens);
+    }
+
+    protected function processSQL($tokens)
+    {
+        $processor = new SQLProcessor($this->options);
+        return $processor->process($tokens);
+    }
+
+    public function revokeQuotation($sql)
+    {
         return parent::revokeQuotation($sql);
     }
 }
-
-?>

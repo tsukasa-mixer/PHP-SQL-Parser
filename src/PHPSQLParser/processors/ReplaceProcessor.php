@@ -2,7 +2,7 @@
 /**
  * ReplaceProcessor.php
  *
- * This file implements the processor for the REPLACE statements. 
+ * This file implements the processor for the REPLACE statements.
  *
  * PHP version 5
  *
@@ -46,13 +46,14 @@ namespace PHPSQLParser\processors;
  *
  * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
+ *
  */
-class ReplaceProcessor extends InsertProcessor {
+class ReplaceProcessor extends InsertProcessor
+{
 
-    public function process($tokenList, $token_category = 'REPLACE') {
+    public function process($tokenList, $token_category = 'REPLACE')
+    {
         return parent::process($tokenList, $token_category);
     }
 
 }
-?>

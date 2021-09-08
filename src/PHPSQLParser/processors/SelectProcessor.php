@@ -33,15 +33,17 @@
 namespace PHPSQLParser\processors;
 
 /**
- * 
+ *
  * This class processes the SELECT statements.
- * 
+ *
  * @author arothe
- * 
+ *
  */
-class SelectProcessor extends SelectExpressionProcessor {
+class SelectProcessor extends SelectExpressionProcessor
+{
 
-    public function process($tokens) {
+    public function process($tokens)
+    {
         $expression = "";
         $expressionList = array();
         foreach ($tokens as $token) {
@@ -50,30 +52,29 @@ class SelectProcessor extends SelectExpressionProcessor {
                 $expression['delim'] = ',';
                 $expressionList[] = $expression;
                 $expression = "";
-            } else if ($this->isCommentToken($token)) {
+            } elseif ($this->isCommentToken($token)) {
                 $expressionList[] = parent::processComment($token);
             } else {
                 switch (strtoupper($token)) {
+                    // add more SELECT options here
+                    case 'DISTINCT':
+                    case 'DISTINCTROW':
+                    case 'HIGH_PRIORITY':
+                    case 'SQL_CACHE':
+                    case 'SQL_NO_CACHE':
+                    case 'SQL_CALC_FOUND_ROWS':
+                    case 'STRAIGHT_JOIN':
+                    case 'SQL_SMALL_RESULT':
+                    case 'SQL_BIG_RESULT':
+                    case 'SQL_BUFFER_RESULT':
+                        $expression = parent::process(trim($token));
+                        $expression['delim'] = ' ';
+                        $expressionList[] = $expression;
+                        $expression = "";
+                        break;
 
-                // add more SELECT options here
-                case 'DISTINCT':
-                case 'DISTINCTROW':
-                case 'HIGH_PRIORITY':
-                case 'SQL_CACHE':
-                case 'SQL_NO_CACHE':
-                case 'SQL_CALC_FOUND_ROWS':
-                case 'STRAIGHT_JOIN':
-                case 'SQL_SMALL_RESULT':
-                case 'SQL_BIG_RESULT':
-                case 'SQL_BUFFER_RESULT':
-                    $expression = parent::process(trim($token));
-                    $expression['delim'] = ' ';
-                    $expressionList[] = $expression;
-                    $expression = "";
-                    break;
-
-                default:
-                    $expression .= $token;
+                    default:
+                        $expression .= $token;
                 }
             }
         }
@@ -85,4 +86,3 @@ class SelectProcessor extends SelectExpressionProcessor {
         return $expressionList;
     }
 }
-?>

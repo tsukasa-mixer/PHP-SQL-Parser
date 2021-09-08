@@ -31,44 +31,37 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * @author    oohook <oohook@163.com>
  * @copyright 2010-2016 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  * @version   SVN: $Id$
  * @example   group by id desc
- * 
+ *
  */
 
 namespace PHPSQLParser\builders;
+
 use PHPSQLParser\exceptions\UnableToCreateSQLException;
 use PHPSQLParser\utils\ExpressionType;
 
 /**
- * This class implements the builder for an alias within the GROUP-BY clause. 
+ * This class implements the builder for an alias within the GROUP-BY clause.
  * You can overwrite all functions to achieve another handling.
  *
  * @author  oohook <oohook@163.com>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
+ *
  */
-class GroupByExpressionBuilder implements Builder {
+class GroupByExpressionBuilder implements Builder
+{
 
-	protected function buildColRef($parsed) {
-		$builder = new ColumnReferenceBuilder();
-		return $builder->build($parsed);
-	}
-	
-	protected function buildReserved($parsed) {
-		$builder = new ReservedBuilder();
-		return $builder->build($parsed);
-	}
-	
-    public function build(array $parsed) {
+    public function build(array $parsed)
+    {
         if ($parsed['expr_type'] !== ExpressionType::EXPRESSION) {
             return "";
         }
-        
+
         $sql = "";
         foreach ($parsed['sub_tree'] as $k => $v) {
             $len = strlen($sql);
@@ -85,5 +78,16 @@ class GroupByExpressionBuilder implements Builder {
         $sql = substr($sql, 0, -1);
         return $sql;
     }
+
+    protected function buildColRef($parsed)
+    {
+        $builder = new ColumnReferenceBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildReserved($parsed)
+    {
+        $builder = new ReservedBuilder();
+        return $builder->build($parsed);
+    }
 }
-?>

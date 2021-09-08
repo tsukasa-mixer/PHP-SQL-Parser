@@ -40,6 +40,7 @@
  */
 
 namespace PHPSQLParser\builders;
+
 use PHPSQLParser\exceptions\UnableToCreateSQLException;
 
 /**
@@ -50,64 +51,11 @@ use PHPSQLParser\exceptions\UnableToCreateSQLException;
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  *
  */
-class SubTreeBuilder implements Builder {
+class SubTreeBuilder implements Builder
+{
 
-    protected function buildColRef($parsed) {
-        $builder = new ColumnReferenceBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildFunction($parsed) {
-        $builder = new FunctionBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildOperator($parsed) {
-        $builder = new OperatorBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildConstant($parsed) {
-        $builder = new ConstantBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildInList($parsed) {
-        $builder = new InListBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildReserved($parsed) {
-        $builder = new ReservedBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildSubQuery($parsed) {
-        $builder = new SubQueryBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildQuery($parsed) {
-        $builder = new QueryBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildSelectBracketExpression($parsed) {
-        $builder = new SelectBracketExpressionBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildUserVariable($parsed) {
-        $builder = new UserVariableBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildSign($parsed) {
-        $builder = new SignBuilder();
-        return $builder->build($parsed);
-    }
-
-    public function build(array $parsed, $delim = " ") {
+    public function build(array $parsed, $delim = " ")
+    {
         if ($parsed['sub_tree'] === '' || $parsed['sub_tree'] === false) {
             return "";
         }
@@ -138,5 +86,70 @@ class SubTreeBuilder implements Builder {
         }
         return substr($sql, 0, -strlen($delim));
     }
+
+    protected function buildColRef($parsed)
+    {
+        $builder = new ColumnReferenceBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildFunction($parsed)
+    {
+        $builder = new FunctionBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildOperator($parsed)
+    {
+        $builder = new OperatorBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildConstant($parsed)
+    {
+        $builder = new ConstantBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildInList($parsed)
+    {
+        $builder = new InListBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildSubQuery($parsed)
+    {
+        $builder = new SubQueryBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildSelectBracketExpression($parsed)
+    {
+        $builder = new SelectBracketExpressionBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildReserved($parsed)
+    {
+        $builder = new ReservedBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildQuery($parsed)
+    {
+        $builder = new QueryBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildUserVariable($parsed)
+    {
+        $builder = new UserVariableBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildSign($parsed)
+    {
+        $builder = new SignBuilder();
+        return $builder->build($parsed);
+    }
 }
-?>

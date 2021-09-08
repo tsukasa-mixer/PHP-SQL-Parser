@@ -40,6 +40,7 @@
  */
 
 namespace PHPSQLParser\builders;
+
 use PHPSQLParser\exceptions\UnableToCreateSQLException;
 
 /**
@@ -50,54 +51,11 @@ use PHPSQLParser\exceptions\UnableToCreateSQLException;
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  *
  */
-class RefClauseBuilder implements Builder {
+class RefClauseBuilder implements Builder
+{
 
-    protected function buildInList($parsed) {
-        $builder = new InListBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildColRef($parsed) {
-        $builder = new ColumnReferenceBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildOperator($parsed) {
-        $builder = new OperatorBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildFunction($parsed) {
-        $builder = new FunctionBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildConstant($parsed) {
-        $builder = new ConstantBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildBracketExpression($parsed) {
-        $builder = new SelectBracketExpressionBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildColumnList($parsed) {
-        $builder = new ColumnListBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildSubQuery($parsed) {
-        $builder = new SubQueryBuilder();
-        return $builder->build($parsed);
-    }
- 
-    protected function buildReserved($parsed) {
-        $builder = new ReservedBuilder();
-        return $builder->build($parsed);
-    }
-
-    public function build(array $parsed) {
+    public function build(array $parsed)
+    {
         if ($parsed === false) {
             return '';
         }
@@ -122,5 +80,58 @@ class RefClauseBuilder implements Builder {
         }
         return substr($sql, 0, -1);
     }
+
+    protected function buildColRef($parsed)
+    {
+        $builder = new ColumnReferenceBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildOperator($parsed)
+    {
+        $builder = new OperatorBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildConstant($parsed)
+    {
+        $builder = new ConstantBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildFunction($parsed)
+    {
+        $builder = new FunctionBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildBracketExpression($parsed)
+    {
+        $builder = new SelectBracketExpressionBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildInList($parsed)
+    {
+        $builder = new InListBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildColumnList($parsed)
+    {
+        $builder = new ColumnListBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildSubQuery($parsed)
+    {
+        $builder = new SubQueryBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildReserved($parsed)
+    {
+        $builder = new ReservedBuilder();
+        return $builder->build($parsed);
+    }
 }
-?>

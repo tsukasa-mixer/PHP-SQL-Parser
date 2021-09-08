@@ -49,9 +49,11 @@ namespace PHPSQLParser\processors;
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  *
  */
-class DeleteProcessor extends AbstractProcessor {
+class DeleteProcessor extends AbstractProcessor
+{
 
-    public function process($tokens) {
+    public function process($tokens)
+    {
         $tables = array();
         $del = $tokens['DELETE'];
 
@@ -76,9 +78,10 @@ class DeleteProcessor extends AbstractProcessor {
             unset($tokens['OPTIONS']);
         }
 
-        $tokens['DELETE'] = array('options' => (empty($options) ? false : $options),
-                                  'tables' => (empty($tables) ? false : $tables));
+        $tokens['DELETE'] = array(
+            'options' => (empty($options) ? false : $options),
+            'tables' => (empty($tables) ? false : $tables)
+        );
         return $tokens;
     }
 }
-?>

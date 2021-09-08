@@ -31,59 +31,32 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  * @version   SVN: $Id$
- * 
+ *
  */
 
 namespace PHPSQLParser\builders;
+
 use PHPSQLParser\exceptions\UnableToCreateSQLException;
 
 /**
  * This class implements the builder for the index options of a CREATE INDEX
- * statement. 
+ * statement.
  * You can overwrite all functions to achieve another handling.
  *
  * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *  
+ *
  */
-class CreateIndexOptionsBuilder implements Builder {
+class CreateIndexOptionsBuilder implements Builder
+{
 
-    protected function buildIndexParser($parsed) {
-        $builder = new IndexParserBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildIndexSize($parsed) {
-        $builder = new IndexSizeBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildIndexType($parsed) {
-        $builder = new IndexTypeBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildIndexComment($parsed) {
-        $builder = new IndexCommentBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildIndexAlgorithm($parsed) {
-        $builder = new IndexAlgorithmBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildIndexLock($parsed) {
-        $builder = new IndexLockBuilder();
-        return $builder->build($parsed);
-    }
-
-    public function build(array $parsed) {
+    public function build(array $parsed)
+    {
         if ($parsed['options'] === false) {
             return '';
         }
@@ -105,5 +78,40 @@ class CreateIndexOptionsBuilder implements Builder {
         }
         return ' ' . substr($sql, 0, -1);
     }
+
+    protected function buildIndexAlgorithm($parsed)
+    {
+        $builder = new IndexAlgorithmBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildIndexLock($parsed)
+    {
+        $builder = new IndexLockBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildIndexComment($parsed)
+    {
+        $builder = new IndexCommentBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildIndexParser($parsed)
+    {
+        $builder = new IndexParserBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildIndexSize($parsed)
+    {
+        $builder = new IndexSizeBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildIndexType($parsed)
+    {
+        $builder = new IndexTypeBuilder();
+        return $builder->build($parsed);
+    }
 }
-?>

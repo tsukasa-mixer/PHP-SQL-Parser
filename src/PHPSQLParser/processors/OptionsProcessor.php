@@ -40,6 +40,7 @@
  */
 
 namespace PHPSQLParser\processors;
+
 use PHPSQLParser\utils\ExpressionType;
 
 /**
@@ -49,9 +50,11 @@ use PHPSQLParser\utils\ExpressionType;
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  *
  */
-class OptionsProcessor extends AbstractProcessor {
+class OptionsProcessor extends AbstractProcessor
+{
 
-    public function process($tokens) {
+    public function process($tokens)
+    {
         $resultList = array();
 
         foreach ($tokens as $token) {
@@ -66,12 +69,13 @@ class OptionsProcessor extends AbstractProcessor {
                 }
                 $result[] = array('expr_type' => ExpressionType::RESERVED, 'base_expr' => $trim);
             }
-            $resultList[] = array('expr_type' => ExpressionType::EXPRESSION, 'base_expr' => trim($token),
-                                  'sub_tree' => $result);
+            $resultList[] = array(
+                'expr_type' => ExpressionType::EXPRESSION,
+                'base_expr' => trim($token),
+                'sub_tree' => $result
+            );
         }
 
         return $resultList;
     }
 }
-
-?>

@@ -48,19 +48,11 @@ namespace PHPSQLParser\processors;
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  *
  */
-class UnionProcessor extends AbstractProcessor {
+class UnionProcessor extends AbstractProcessor
+{
 
-    protected function processDefault($token) {
-        $processor = new DefaultProcessor($this->options);
-        return $processor->process($token);
-    }
-
-    protected function processSQL($token) {
-        $processor = new SQLProcessor($this->options);
-        return $processor->process($token);
-    }
-
-    public static function isUnion($queries) {
+    public static function isUnion($queries)
+    {
         $unionTypes = array('UNION', 'UNION ALL');
         foreach ($unionTypes as $unionType) {
             if (!empty($queries[$unionType])) {
@@ -70,94 +62,8 @@ class UnionProcessor extends AbstractProcessor {
         return false;
     }
 
-    /**
-     * MySQL supports a special form of UNION:
-     * (select ...)
-     * union
-     * (select ...)
-     *
-     * This function handles this query syntax. Only one such subquery
-     * is supported in each UNION block. (select)(select)union(select) is not legal.
-     * The extra queries will be silently ignored.
-     */
-    protected function processMySQLUnion($queries) {
-        $unionTypes = array('UNION', 'UNION ALL');
-        foreach ($unionTypes as $unionType) {
-
-            if (empty($queries[$unionType])) {
-                continue;
-            }
-
-            foreach ($queries[$unionType] as $key => $tokenList) {
-                foreach ($tokenList as $z => $token) {
-                    $token = trim($token);
-                    if ($token === "") {
-                        continue;
-                    }
-
-                    // starts with "(select"
-                    if (preg_match("/^\\(\\s*select\\s*/i", $token)) {
-                        $queries[$unionType][$key] = $this->processDefault($this->removeParenthesisFromStart($token));
-                        break;
-                    }
-                    $queries[$unionType][$key] = $this->processSQL($queries[$unionType][$key]);
-                    break;
-                }
-            }
-        }
-
-        // it can be parsed or not
-        return $queries;
-    }
-
-    /**
-     * Moves the final union query into a separate output, so the remainder (such as ORDER BY) can
-     * be processed separately.
-     */
-    protected function splitUnionRemainder($queries, $unionType, $outputArray)
+    public function process($inputArray)
     {
-        $finalQuery = [];
-
-        //If this token contains a matching pair of brackets at the start and end, use it as the final query
-        $finalQueryFound = false;
-        if (count($outputArray) === 1) {
-            $tokenAsArray = str_split(trim($outputArray[0]));
-            if ($tokenAsArray[0] == '(' && $tokenAsArray[count($tokenAsArray)-1] == ')') {
-                $queries[$unionType][] = $outputArray;
-                $finalQueryFound = true;
-            }
-        }
-
-        if (!$finalQueryFound) {
-            foreach ($outputArray as $key => $token) {
-                if (strtoupper($token) == 'ORDER') {
-                    break;
-                } else {
-                    $finalQuery[] = $token;
-                    unset($outputArray[$key]);
-                }
-            }
-        }
-
-
-        $finalQueryString = trim(implode($finalQuery));
-
-        if (!empty($finalQuery) && $finalQueryString != '') {
-            $queries[$unionType][] = $finalQuery;
-        }
-
-        $defaultProcessor = new DefaultProcessor($this->options);
-        $rePrepareSqlString = trim(implode($outputArray));
-
-        if (!empty($rePrepareSqlString)) {
-            $remainingQueries = $defaultProcessor->process($rePrepareSqlString);
-            $queries[] = $remainingQueries;
-        }
-
-        return $queries;
-    }
-
-    public function process($inputArray) {
         $outputArray = array();
 
         // ometimes the parser needs to skip ahead until a particular
@@ -224,5 +130,104 @@ class UnionProcessor extends AbstractProcessor {
 
         return $this->processMySQLUnion($queries);
     }
+
+    /**
+     * Moves the final union query into a separate output, so the remainder (such as ORDER BY) can
+     * be processed separately.
+     */
+    protected function splitUnionRemainder($queries, $unionType, $outputArray)
+    {
+        $finalQuery = array();
+
+        //If this token contains a matching pair of brackets at the start and end, use it as the final query
+        $finalQueryFound = false;
+        if (count($outputArray) === 1) {
+            $tokenAsArray = str_split(trim($outputArray[0]));
+            if ($tokenAsArray[0] === '(' && $tokenAsArray[count($tokenAsArray) - 1] === ')') {
+                $queries[$unionType][] = $outputArray;
+                $finalQueryFound = true;
+            }
+        }
+
+        if (!$finalQueryFound) {
+            foreach ($outputArray as $key => $token) {
+                if (strtoupper($token) === 'ORDER') {
+                    break;
+                }
+
+                $finalQuery[] = $token;
+                unset($outputArray[$key]);
+            }
+        }
+
+
+        $finalQueryString = trim(implode($finalQuery));
+
+        if (!empty($finalQuery) && $finalQueryString != '') {
+            $queries[$unionType][] = $finalQuery;
+        }
+
+        $defaultProcessor = new DefaultProcessor($this->options);
+        $rePrepareSqlString = trim(implode($outputArray));
+
+        if (!empty($rePrepareSqlString)) {
+            $remainingQueries = $defaultProcessor->process($rePrepareSqlString);
+            $queries[] = $remainingQueries;
+        }
+
+        return $queries;
+    }
+
+    /**
+     * MySQL supports a special form of UNION:
+     * (select ...)
+     * union
+     * (select ...)
+     *
+     * This function handles this query syntax. Only one such subquery
+     * is supported in each UNION block. (select)(select)union(select) is not legal.
+     * The extra queries will be silently ignored.
+     */
+    protected function processMySQLUnion($queries)
+    {
+        $unionTypes = array('UNION', 'UNION ALL');
+
+        foreach ($unionTypes as $unionType) {
+            if (empty($queries[$unionType])) {
+                continue;
+            }
+
+            foreach ($queries[$unionType] as $key => $tokenList) {
+                foreach ($tokenList as $z => $token) {
+                    $token = trim($token);
+                    if ($token === "") {
+                        continue;
+                    }
+
+                    // starts with "(select"
+                    if (preg_match("/^\\(\\s*select\\s*/i", $token)) {
+                        $queries[$unionType][$key] = $this->processDefault($this->removeParenthesisFromStart($token));
+                        break;
+                    }
+                    $queries[$unionType][$key] = $this->processSQL($queries[$unionType][$key]);
+                    break;
+                }
+            }
+        }
+
+        // it can be parsed or not
+        return $queries;
+    }
+
+    protected function processDefault($token)
+    {
+        $processor = new DefaultProcessor($this->options);
+        return $processor->process($token);
+    }
+
+    protected function processSQL($token)
+    {
+        $processor = new SQLProcessor($this->options);
+        return $processor->process($token);
+    }
 }
-?>
