@@ -48,6 +48,7 @@ class ReferenceDefinitionProcessor extends AbstractProcessor
 
         $expr = array('expr_type' => ExpressionType::REFERENCE, 'base_expr' => false, 'sub_tree' => array());
         $base_expr = '';
+        $currCategory = null;
 
         foreach ($tokens as $key => $token) {
             $trim = trim($token);
@@ -57,7 +58,6 @@ class ReferenceDefinitionProcessor extends AbstractProcessor
                 continue;
             }
 
-            $currCategory = null;
             $upper = strtoupper($trim);
 
             switch ($upper) {
