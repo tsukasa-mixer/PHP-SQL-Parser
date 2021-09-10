@@ -160,13 +160,13 @@ class ValuesProcessor extends AbstractProcessor
 
     protected function processRecord($unparsed)
     {
-        $processor = new RecordProcessor($this->options);
+        $processor = $this->options->getProcessor(RecordProcessor::class);
         return $processor->process($unparsed);
     }
 
     protected function processExpressionList($unparsed)
     {
-        $processor = new ExpressionListProcessor($this->options);
+        $processor = $this->options->getProcessor(ExpressionListProcessor::class);
         return $processor->process($unparsed);
     }
 

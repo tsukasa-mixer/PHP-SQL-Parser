@@ -95,12 +95,12 @@ class PHPSQLParser
     public function parse($sql, $calcPositions = false)
     {
 
-        $processor = new DefaultProcessor($this->options);
+        $processor = $this->options->getProcessor(DefaultProcessor::class);
         $queries = $processor->process($sql);
 
         // calc the positions of some important tokens
         if ($calcPositions) {
-            $calculator = new PositionCalculator();
+            $calculator = $this->getPositionCalculator();
             $queries = $calculator->setPositionsWithinSQL($sql, $queries);
         }
 
@@ -109,12 +109,15 @@ class PHPSQLParser
         return $this->parsed;
     }
 
+    protected function getPositionCalculator()
+    {
+        return new PositionCalculator();
+    }
+
     /**
      * Add a custom function to the parser.  no return value
      *
      * @param String $token The name of the function to add
-     *
-     * @return null
      */
     public function addCustomFunction($token)
     {
@@ -125,8 +128,6 @@ class PHPSQLParser
      * Remove a custom function from the parser.  no return value
      *
      * @param String $token The name of the function to remove
-     *
-     * @return null
      */
     public function removeCustomFunction($token)
     {

@@ -167,11 +167,10 @@ class UnionProcessor extends AbstractProcessor
             $queries[$unionType][] = $finalQuery;
         }
 
-        $defaultProcessor = new DefaultProcessor($this->options);
         $rePrepareSqlString = trim(implode($outputArray));
 
         if (!empty($rePrepareSqlString)) {
-            $remainingQueries = $defaultProcessor->process($rePrepareSqlString);
+            $remainingQueries = $this->processDefault($rePrepareSqlString);
             $queries[] = $remainingQueries;
         }
 
@@ -221,13 +220,13 @@ class UnionProcessor extends AbstractProcessor
 
     protected function processDefault($token)
     {
-        $processor = new DefaultProcessor($this->options);
+        $processor = $this->options->getProcessor(DefaultProcessor::class);
         return $processor->process($token);
     }
 
     protected function processSQL($token)
     {
-        $processor = new SQLProcessor($this->options);
+        $processor = $this->options->getProcessor(SQLProcessor::class);
         return $processor->process($token);
     }
 }

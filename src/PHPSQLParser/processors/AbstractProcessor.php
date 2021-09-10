@@ -68,6 +68,10 @@ abstract class AbstractProcessor
      */
     public function __construct(Options $options = null)
     {
+        if (!$options) {
+            $options = new Options(array());
+        }
+
         $this->options = $options;
     }
 
@@ -75,7 +79,7 @@ abstract class AbstractProcessor
      * This function implements the main functionality of a processor class.
      * Always use default valuses for additional parameters within overridden functions.
      */
-    public abstract function process($tokens);
+    abstract public function process($tokens);
 
     /**
      * this function splits up a SQL statement into easy to "parse"
@@ -340,7 +344,7 @@ abstract class AbstractProcessor
         return (isset($out['expr_type']) && $out['expr_type'] === ExpressionType::COMMENT);
     }
 
-    protected function array_insert_after($array, $key, $entry)
+    protected function arrayInsertAfter($array, $key, $entry)
     {
         $idx = array_search($key, array_keys($array));
         return array_slice($array, 0, $idx + 1, true)

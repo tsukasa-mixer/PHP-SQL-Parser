@@ -6,12 +6,16 @@
 
 namespace PHPSQLParser;
 
+use PHPSQLParser\processors\AbstractProcessor;
+
 /**
  *
  * @author  mfris
  * @package PHPSQLParser
+ *
+ * @template T
  */
-final class Options
+class Options
 {
 
     /**
@@ -28,6 +32,8 @@ final class Options
      * @const string
      */
     const ANSI_QUOTES = 'ansi_quotes';
+
+    protected $instances = array();
 
     /**
      * Options constructor.
@@ -53,5 +59,18 @@ final class Options
     public function getANSIQuotes()
     {
         return (isset($this->options[self::ANSI_QUOTES]) && $this->options[self::ANSI_QUOTES]);
+    }
+
+    /**
+     * @param class-string<T>|string $classString
+     * @return T|AbstractProcessor
+     */
+    public function getProcessor($classString)
+    {
+        if (!isset($this->instances[$classString])) {
+            $this->instances[$classString] = new $classString($this);
+        }
+
+        return $this->instances[$classString];
     }
 }
