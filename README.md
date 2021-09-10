@@ -1,4 +1,4 @@
-[![Build Status](https://app.travis-ci.com/tsukasa-mixer/PHP-SQL-Parser.svg?branch=master)](https://travis-ci.com/tsukasa-mixer/PHP-SQL-Parser)
+[![Build Status](https://app.travis-ci.com/tsukasa-mixer/PHP-SQL-Parser.svg?branch=master)](https://app.travis-ci.com/tsukasa-mixer/PHP-SQL-Parser)
 
 PHP-SQL-Parser
 ==============
