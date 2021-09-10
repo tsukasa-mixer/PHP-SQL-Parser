@@ -413,7 +413,7 @@ class TableProcessor extends AbstractProcessor
 
     protected function processPartitionOptions($tokens)
     {
-        $processor = new PartitionOptionsProcessor($this->options);
+        $processor = $this->options->getProcessor(PartitionOptionsProcessor::class);
         return $processor->process($tokens);
     }
 
@@ -424,7 +424,7 @@ class TableProcessor extends AbstractProcessor
 
     protected function processCreateDefinition($tokens)
     {
-        $processor = new CreateDefinitionProcessor($this->options);
+        $processor = $this->options->getProcessor(CreateDefinitionProcessor::class);
         return $processor->process($tokens);
     }
 }

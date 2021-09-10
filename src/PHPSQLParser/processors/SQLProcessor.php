@@ -49,7 +49,7 @@ namespace PHPSQLParser\processors;
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  *
  */
-class SQLProcessor extends SQLChunkProcessor
+class SQLProcessor extends AbstractProcessor
 {
     /**
      * This function breaks up the SQL statement into logical sections.
@@ -63,19 +63,18 @@ class SQLProcessor extends SQLChunkProcessor
         $out = false;
 
         // $tokens may come as a numeric indexed array starting with an index greater than 0 (or as a boolean)
-        $tokenCount = count($tokens);
         if (is_array($tokens)) {
             $tokens = array_values($tokens);
         }
 
-        for ($tokenNumber = 0; $tokenNumber < $tokenCount; ++$tokenNumber) {
+        foreach ($tokens as $tokenNumber => $tokenNumberValue) {
             // https://github.com/greenlion/PHP-SQL-Parser/issues/279
             // https://github.com/sinri/PHP-SQL-Parser/commit/eac592a0e19f1df6f420af3777a6d5504837faa7
             // as there is no pull request for 279 by the user. His solution works and tested.
             if (!isset($tokens[$tokenNumber])) {
                 continue;
             }// as a fix by Sinri 20180528
-            $token = $tokens[$tokenNumber];
+            $token = $tokenNumberValue;
             $trim = trim($token); // this removes also \n and \t!
 
             // if it starts with an "(", it should follow a SELECT
@@ -185,7 +184,6 @@ class SQLProcessor extends SQLChunkProcessor
                     }
                     // else direction of ORDER-BY
                     break;
-
 
                 case 'DATABASE':
                 case 'SCHEMA':
@@ -505,6 +503,12 @@ class SQLProcessor extends SQLChunkProcessor
             $prev_category = $token_category;
         }
 
-        return parent::process($out);
+        return $this->processChunk($out);
+    }
+
+    protected function processChunk($chunk)
+    {
+        $processor = $this->options->getProcessor(SQLChunkProcessor::class);
+        return $processor->process($chunk);
     }
 }

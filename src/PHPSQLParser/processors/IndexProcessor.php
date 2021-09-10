@@ -334,7 +334,7 @@ class IndexProcessor extends AbstractProcessor
 
     protected function processIndexColumnList($parsed)
     {
-        $processor = new IndexColumnListProcessor($this->options);
+        $processor = $this->options->getProcessor(IndexColumnListProcessor::class);
         return $processor->process($parsed);
     }
 

@@ -167,7 +167,7 @@ class SelectExpressionProcessor extends AbstractProcessor
 
     protected function processExpressionList($unparsed)
     {
-        $processor = new ExpressionListProcessor($this->options);
+        $processor = $this->options->getProcessor(ExpressionListProcessor::class);
         return $processor->process($unparsed);
     }
 

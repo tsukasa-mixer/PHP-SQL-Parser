@@ -81,7 +81,7 @@ class ExpressionListProcessor extends AbstractProcessor
 
             /* is it a subquery? */
             if ($curr->isSubQueryToken()) {
-                $processor = new DefaultProcessor($this->options);
+                $processor = $this->options->getProcessor(DefaultProcessor::class);
                 $curr->setSubTree($processor->process($this->removeParenthesisFromStart($curr->getTrim())));
                 $curr->setTokenType(ExpressionType::SUBQUERY);
             } elseif ($curr->isEnclosedWithinParenthesis()) {

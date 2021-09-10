@@ -98,8 +98,7 @@ class FromProcessor extends AbstractProcessor
                 $res['expr_type'] = ExpressionType::SUBQUERY;
             } else {
                 $tmp = $this->splitSQLIntoTokens($parseInfo['expression']);
-                $unionProcessor = new UnionProcessor($this->options);
-                $unionQueries = $unionProcessor->process($tmp);
+                $unionQueries = $this->processUnion($tmp);
 
                 // If there was no UNION or UNION ALL in the query, then the query is
                 // stored at $queries[0].
@@ -127,21 +126,27 @@ class FromProcessor extends AbstractProcessor
         return $res;
     }
 
+    protected function processUnion($unionQueries)
+    {
+        $processor = $this->options->getProcessor(UnionProcessor::class);
+        return $processor->process($unionQueries);
+    }
+
     protected function processColumnList($unparsed)
     {
-        $processor = new ColumnListProcessor($this->options);
+        $processor = $this->options->getProcessor(ColumnListProcessor::class);
         return $processor->process($unparsed);
     }
 
     protected function processExpressionList($unparsed)
     {
-        $processor = new ExpressionListProcessor($this->options);
+        $processor = $this->options->getProcessor(ExpressionListProcessor::class);
         return $processor->process($unparsed);
     }
 
     protected function processSQLDefault($unparsed)
     {
-        $processor = new DefaultProcessor($this->options);
+        $processor = $this->options->getProcessor(DefaultProcessor::class);
         return $processor->process($unparsed);
     }
 

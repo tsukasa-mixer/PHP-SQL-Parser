@@ -111,7 +111,7 @@ class SetProcessor extends AbstractProcessor
 
     protected function processExpressionList($tokens)
     {
-        $processor = new ExpressionListProcessor($this->options);
+        $processor = $this->options->getProcessor(ExpressionListProcessor::class);
         return $processor->process($tokens);
     }
 

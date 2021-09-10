@@ -91,7 +91,7 @@ In the example the given query has three sections: SELECT,FROM,WHERE. You will s
 
 In the following example, the SELECT section contains one item which is a column reference (colref). The FROM clause contains only one table. You'll notice that it still says 'JOIN'. Don't be confused by this. Every table item is a join, but it may not have any join critera. Finally, the where clause consists of three items, a colref, an operator and a literal value (const).
 
-There is a [complex example](https://github.com/greenlion/PHP-SQL-Parser/wiki/Complex-Example) which features almost all of the available SELECT syntax.
+There is a [complex example](./Complex-Example) which features almost all of the available SELECT syntax.
 
 #### simple example
 

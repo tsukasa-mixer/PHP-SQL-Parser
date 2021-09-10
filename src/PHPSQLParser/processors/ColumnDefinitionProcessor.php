@@ -460,13 +460,13 @@ class ColumnDefinitionProcessor extends AbstractProcessor
 
     protected function processReferenceDefinition($parsed)
     {
-        $processor = new ReferenceDefinitionProcessor($this->options);
+        $processor = $this->options->getProcessor(ReferenceDefinitionProcessor::class);
         return $processor->process($parsed);
     }
 
     protected function processExpressionList($parsed)
     {
-        $processor = new ExpressionListProcessor($this->options);
+        $processor = $this->options->getProcessor(ExpressionListProcessor::class);
         $expr = $this->removeParenthesisFromStart($parsed);
         $expr = $this->splitSQLIntoTokens($expr);
         $expr = $this->removeComma($expr);

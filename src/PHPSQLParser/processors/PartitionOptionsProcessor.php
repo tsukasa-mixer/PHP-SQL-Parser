@@ -372,7 +372,7 @@ class PartitionOptionsProcessor extends AbstractProcessor
 
     protected function processExpressionList($unparsed)
     {
-        $processor = new ExpressionListProcessor($this->options);
+        $processor = $this->options->getProcessor(ExpressionListProcessor::class);
         $expr = $this->removeParenthesisFromStart($unparsed);
         $expr = $this->splitSQLIntoTokens($expr);
         return $processor->process($expr);
@@ -380,14 +380,14 @@ class PartitionOptionsProcessor extends AbstractProcessor
 
     protected function processColumnList($unparsed)
     {
-        $processor = new ColumnListProcessor($this->options);
+        $processor = $this->options->getProcessor(ColumnListProcessor::class);
         $expr = $this->removeParenthesisFromStart($unparsed);
         return $processor->process($expr);
     }
 
     protected function processPartitionDefinition($unparsed)
     {
-        $processor = new PartitionDefinitionProcessor($this->options);
+        $processor = $this->options->getProcessor(PartitionDefinitionProcessor::class);
         $expr = $this->removeParenthesisFromStart($unparsed);
         $expr = $this->splitSQLIntoTokens($expr);
         return $processor->process($expr);

@@ -64,7 +64,6 @@ class CreateDefinitionProcessor extends AbstractProcessor
         $skip = 0;
 
         foreach ($tokens as $k => $token) {
-
             $trim = trim($token);
             $base_expr .= $token;
 
@@ -80,7 +79,6 @@ class CreateDefinitionProcessor extends AbstractProcessor
             $upper = strtoupper($trim);
 
             switch ($upper) {
-
                 case 'CONSTRAINT':
                     $expr[] = array(
                         'expr_type' => ExpressionType::CONSTRAINT,
@@ -415,7 +413,7 @@ class CreateDefinitionProcessor extends AbstractProcessor
 
     protected function processReferenceDefinition($parsed)
     {
-        $processor = new ReferenceDefinitionProcessor($this->options);
+        $processor = $this->options->getProcessor(ReferenceDefinitionProcessor::class);
         return $processor->process($parsed);
     }
 
@@ -448,19 +446,19 @@ class CreateDefinitionProcessor extends AbstractProcessor
 
     protected function processIndexColumnList($parsed)
     {
-        $processor = new IndexColumnListProcessor($this->options);
+        $processor = $this->options->getProcessor(IndexColumnListProcessor::class);
         return $processor->process($parsed);
     }
 
     protected function processExpressionList($parsed)
     {
-        $processor = new ExpressionListProcessor($this->options);
+        $processor = $this->options->getProcessor(ExpressionListProcessor::class);
         return $processor->process($parsed);
     }
 
     protected function processColumnDefinition($parsed)
     {
-        $processor = new ColumnDefinitionProcessor($this->options);
+        $processor = $this->options->getProcessor(ColumnDefinitionProcessor::class);
         return $processor->process($parsed);
     }
 }

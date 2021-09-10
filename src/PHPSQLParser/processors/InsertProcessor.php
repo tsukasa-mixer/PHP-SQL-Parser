@@ -169,7 +169,7 @@ class InsertProcessor extends AbstractProcessor
         }
         $cols = $this->removeParenthesisFromStart($cols);
         if (stripos($cols, 'SELECT') === 0) {
-            $processor = new DefaultProcessor($this->options);
+            $processor = $this->options->getProcessor(DefaultProcessor::class);
             $parsed['sub_tree'] = array(
                 array(
                     'expr_type' => ExpressionType::QUERY,
@@ -178,7 +178,7 @@ class InsertProcessor extends AbstractProcessor
                 )
             );
         } else {
-            $processor = new ColumnListProcessor($this->options);
+            $processor = $this->options->getProcessor(ColumnListProcessor::class);
             $parsed['sub_tree'] = $processor->process($cols);
             $parsed['expr_type'] = ExpressionType::COLUMN_LIST;
         }

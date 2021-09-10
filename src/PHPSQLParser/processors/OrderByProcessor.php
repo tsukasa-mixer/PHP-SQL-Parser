@@ -141,7 +141,7 @@ class OrderByProcessor extends AbstractProcessor
 
     protected function processSelectExpression($unparsed)
     {
-        $processor = new SelectExpressionProcessor($this->options);
+        $processor = $this->options->getProcessor(SelectExpressionProcessor::class);
         return $processor->process($unparsed);
     }
 }

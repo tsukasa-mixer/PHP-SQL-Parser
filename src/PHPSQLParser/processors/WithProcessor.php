@@ -130,7 +130,7 @@ class WithProcessor extends AbstractProcessor
 
     protected function processTopLevel($sql)
     {
-        $processor = new DefaultProcessor($this->options);
+        $processor = $this->options->getProcessor(DefaultProcessor::class);
         return $processor->process($sql);
     }
 }
