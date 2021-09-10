@@ -185,7 +185,6 @@ class SQLProcessor extends AbstractProcessor
                     // else direction of ORDER-BY
                     break;
 
-
                 case 'DATABASE':
                 case 'SCHEMA':
                     if ($prev_category === 'DROP') {
