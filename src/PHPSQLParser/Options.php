@@ -47,7 +47,7 @@ class Options
     public function __construct(array $options)
     {
         $this->options = $options;
-        $this->mboverloaded = (bool)@ini_get('mbstring.func_overload');
+        $this->mboverloaded = extension_loaded('mbstring') && @ini_get('mbstring.func_overload');
     }
 
     /**
