@@ -94,6 +94,11 @@ class PHPSQLParser
      */
     public function parse($sql, $calcPositions = false)
     {
+        $oldInternalEncoding = null;
+        if ($this->options->isMBOverloaded()) {
+            $oldInternalEncoding = mb_internal_encoding();
+            mb_internal_encoding('8bit');
+        }
 
         $processor = $this->options->getProcessor(DefaultProcessor::class);
         $queries = $processor->process($sql);
@@ -106,6 +111,11 @@ class PHPSQLParser
 
         // store the parsed queries
         $this->parsed = $queries;
+
+        if ($oldInternalEncoding) {
+            mb_internal_encoding($oldInternalEncoding);
+        }
+
         return $this->parsed;
     }
 

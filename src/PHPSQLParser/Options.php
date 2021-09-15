@@ -34,6 +34,10 @@ class Options
     const ANSI_QUOTES = 'ansi_quotes';
 
     protected $instances = array();
+    /**
+     * @var bool
+     */
+    protected $mboverloaded = false;
 
     /**
      * Options constructor.
@@ -43,6 +47,7 @@ class Options
     public function __construct(array $options)
     {
         $this->options = $options;
+        $this->mboverloaded = (bool)@ini_get('mbstring.func_overload');
     }
 
     /**
@@ -72,5 +77,13 @@ class Options
         }
 
         return $this->instances[$classString];
+    }
+
+    /**
+     * @return bool
+     */
+    public function isMBOverloaded()
+    {
+        return $this->mboverloaded;
     }
 }

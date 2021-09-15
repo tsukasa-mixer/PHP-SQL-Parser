@@ -252,7 +252,6 @@ class SQLProcessor extends AbstractProcessor
                 case 'INSTALL':
                 case 'UNINSTALL':
                 case 'ANALZYE':
-                case 'BACKUP':
                 case 'CHECKSUM':
                 case 'REPAIR':
                 case 'RESTORE':
@@ -262,6 +261,7 @@ class SQLProcessor extends AbstractProcessor
                     $out[$upper][0] = $trim;
                     continue 2;
 
+                case 'BACKUP':
                 case 'REPLACE':
                     if ($prev_category === '') {
                         // set the category in case these get subclauses in a future version of MySQL

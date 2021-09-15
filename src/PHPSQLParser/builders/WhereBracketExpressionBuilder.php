@@ -74,6 +74,7 @@ class WhereBracketExpressionBuilder implements Builder
             // $sql .= $this->buildSubQuery($v);
             $sql .= $this->buildReserved($v);
             $sql .= $this->buildSubQuery($v);
+            $sql .= $this->buildComment($v);
 
             if ($len == strlen($sql)) {
                 throw new UnableToCreateSQLException('WHERE expression subtree', $k, $v, 'expr_type');
@@ -140,4 +141,13 @@ class WhereBracketExpressionBuilder implements Builder
         return $builder->build($parsed);
     }
 
+    protected function buildComment($parsed)
+    {
+        if ($parsed['expr_type'] === ExpressionType::COMMENT) {
+            return "\n{$parsed['value']}\n";
+        }
+
+        return '';
+    }
 }
+

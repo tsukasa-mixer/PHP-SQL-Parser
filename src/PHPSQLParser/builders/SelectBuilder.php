@@ -42,6 +42,7 @@
 namespace PHPSQLParser\builders;
 
 use PHPSQLParser\exceptions\UnableToCreateSQLException;
+use PHPSQLParser\utils\ExpressionType;
 
 /**
  * This class implements the builder for the [SELECT] field. You can overwrite
@@ -65,6 +66,7 @@ class SelectBuilder implements Builder
             $sql .= $this->buildFunction($v);
             $sql .= $this->buildConstant($v);
             $sql .= $this->buildReserved($v);
+            $sql .= $this->buildComment($v);
 
             if ($len == strlen($sql)) {
                 throw new UnableToCreateSQLException('SELECT', $k, $v, 'expr_type');
@@ -109,6 +111,15 @@ class SelectBuilder implements Builder
     {
         $builder = new ReservedBuilder();
         return $builder->build($parsed);
+    }
+
+    protected function buildComment($parsed)
+    {
+        if ($parsed['expr_type'] === ExpressionType::COMMENT) {
+            return $parsed['value'] . ' ';
+        }
+
+        return '';
     }
 
     /**

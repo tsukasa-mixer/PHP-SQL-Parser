@@ -32,6 +32,36 @@ SELECT *, COALESCE(g.description,'- все -') AS `group`, COALESCE(stc_name,'- 
 SQL;
     }
 
+    protected function getSql3()
+    {
+        return <<<SQL
+SELECT *, GROUP_CONCAT(DISTINCT IF(sm1.stm_id IS NULL,'удалённый менеджер(ы)',CONCAT_WS(' / ',u1.login,u1.fullname)) SEPARATOR '<br />') AS old_manager, GROUP_CONCAT(DISTINCT IF(sm2.stm_id IS NULL,'удалённый менеджер(ы)',CONCAT_WS(' / ',u2.login,u2.fullname)) SEPARATOR '<br />') AS new_manager FROM `_change_manager_log` INNER JOIN _change_manager_customers ON cmc_cml_id = cml_id LEFT JOIN stock_managers sm1 ON sm1.stm_id = cmc_old_stm_id LEFT JOIN _users u1 ON u1.login = sm1.stm_user_login LEFT JOIN stock_managers sm2 ON sm2.stm_id = cmc_new_stm_id LEFT JOIN _users u2 ON u2.login = sm2.stm_user_login GROUP BY cml_id ORDER BY cml_datetime DESC
+SQL;
+    }
+
+    protected function getSql4()
+    {
+        return <<<SQL
+SELECT *, /* * crt_rate*/ pst_price AS pst_price FROM table
+SQL;
+    }
+
+    protected function getSql5()
+    {
+        return <<<SQL
+SELECT * FROM table WHERE (
+#на случай, если клиент не пользуется отгрузками и возвратами, а только оперирует состояниями
+ IFNULL(pd1.pst_delivered,0) = 0) = FALSE GROUP BY rrt_id
+SQL;
+    }
+
+    protected function getSql6()
+    {
+        return <<<SQL
+SELECT (rpt_id LIKE '%backup') AS backup FROM table
+SQL;
+    }
+
 
     public function testBig()
     {
@@ -43,6 +73,33 @@ SQL;
     {
         $this->innertTestSql(
             $this->getSql2()
+        );
+    }
+
+    public function testBig3()
+    {
+        $this->innertTestSql(
+            $this->getSql3()
+        );
+    }
+
+    public function testBig4()
+    {
+        $this->innertTestSql(
+            $this->getSql4()
+        );
+    }
+
+    public function testBig5()
+    {
+        $this->innertTestSql(
+            $this->getSql5()
+        );
+    }
+    public function testBig6()
+    {
+        $this->innertTestSql(
+            $this->getSql6()
         );
     }
 }
