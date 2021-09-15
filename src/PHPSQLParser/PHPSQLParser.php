@@ -95,7 +95,7 @@ class PHPSQLParser
     public function parse($sql, $calcPositions = false)
     {
         $oldInternalEncoding = null;
-        if ($this->options->isMBOverloaded()) {
+        if ($this->options->isMBOverloaded() && extension_loaded('mbstring')) {
             $oldInternalEncoding = mb_internal_encoding();
             mb_internal_encoding('8bit');
         }
