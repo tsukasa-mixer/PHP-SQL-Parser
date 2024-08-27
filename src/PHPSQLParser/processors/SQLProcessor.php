@@ -60,7 +60,7 @@ class SQLProcessor extends AbstractProcessor
         $prev_category = "";
         $token_category = "";
         $skip_next = 0;
-        $out = false;
+        $out = [];
 
         // $tokens may come as a numeric indexed array starting with an index greater than 0 (or as a boolean)
         if (is_array($tokens)) {
