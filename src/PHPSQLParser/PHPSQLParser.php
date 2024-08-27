@@ -66,7 +66,7 @@ class PHPSQLParser
      * Constructor. It simply calls the parse() function.
      * Use the public variable $parsed to get the output.
      *
-     * @param String|bool $sql The SQL statement.
+     * @param string|bool $sql The SQL statement.
      * @param bool $calcPositions True, if the output should contain [position], false otherwise.
      * @param array $options
      */
@@ -87,7 +87,7 @@ class PHPSQLParser
      * of the positions needs some time, if you don't need positions in
      * your application, set the parameter to false.
      *
-     * @param String $sql The SQL statement.
+     * @param string $sql The SQL statement.
      * @param boolean $calcPositions True, if the output should contain [position], false otherwise.
      *
      * @return array An associative array with all meta information about the SQL statement.
@@ -127,7 +127,7 @@ class PHPSQLParser
     /**
      * Add a custom function to the parser.  no return value
      *
-     * @param String $token The name of the function to add
+     * @param string $token The name of the function to add
      */
     public function addCustomFunction($token)
     {
@@ -137,7 +137,7 @@ class PHPSQLParser
     /**
      * Remove a custom function from the parser.  no return value
      *
-     * @param String $token The name of the function to remove
+     * @param string $token The name of the function to remove
      */
     public function removeCustomFunction($token)
     {
