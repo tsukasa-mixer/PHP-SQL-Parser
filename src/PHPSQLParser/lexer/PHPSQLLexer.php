@@ -74,7 +74,7 @@ class PHPSQLLexer
         $tokens = preg_split(
             $this->splitters->getSplittersRegexPattern(),
             $sql,
-            null,
+            -1,
             PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY
         );
         $tokens = $this->concatComments($tokens);

@@ -7,7 +7,7 @@ require_once dirname(__FILE__) . '/../vendor/autoload.php';
  * from a file as serialized string.
  * Returns an unserialized value from the given file.
  *
- * @param String $filename
+ * @param string $filename
  */
 function getExpectedValue($path, $filename, $unserialize = true) {
 	$path = explode(DIRECTORY_SEPARATOR, $path);
