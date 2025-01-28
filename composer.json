@@ -37,11 +37,11 @@
 		}
 	},
 	"require" : {
-		"php" : ">=5.6"
+		"php" : ">=7.2"
 	},
 	"require-dev" : {
 		"squizlabs/php_codesniffer" : "^2.8.1",
-		"phpunit/phpunit" : "^9.5.13",
+		"phpunit/phpunit" : "^8",
 		"analog/analog" : "^1.0.6"
 	}
 }
