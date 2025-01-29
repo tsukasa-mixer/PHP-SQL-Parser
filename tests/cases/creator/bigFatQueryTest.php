@@ -4,7 +4,7 @@ namespace PHPSQLParser\Test\Creator;
 use PHPSQLParser\PHPSQLParser;
 use PHPSQLParser\PHPSQLCreator;
 
-class bigFatQueryTest extends \PHPUnit_Framework_TestCase
+class bigFatQueryTest extends \PHPUnit\Framework\TestCase
 {
     protected function innertTestSql($sql)
     {

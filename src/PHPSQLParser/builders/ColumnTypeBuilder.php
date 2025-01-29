@@ -31,32 +31,70 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * 
  * @author    André Rothe <andre.rothe@phosco.info>
  * @copyright 2010-2014 Justin Swanhart and André Rothe
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
  * @version   SVN: $Id$
- *
+ * 
  */
 
 namespace PHPSQLParser\builders;
-
 use PHPSQLParser\exceptions\UnableToCreateSQLException;
 use PHPSQLParser\utils\ExpressionType;
 
 /**
- * This class implements the builder for the column type statement part of CREATE TABLE.
+ * This class implements the builder for the column type statement part of CREATE TABLE. 
  * You can overwrite all functions to achieve another handling.
  *
  * @author  André Rothe <andre.rothe@phosco.info>
  * @license http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- *
+ *  
  */
-class ColumnTypeBuilder implements Builder
-{
+class ColumnTypeBuilder implements Builder {
 
-    public function build(array $parsed)
-    {
+    protected function buildColumnTypeBracketExpression($parsed) {
+        $builder = new ColumnTypeBracketExpressionBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildReserved($parsed) {
+        $builder = new ReservedBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildDataType($parsed) {
+        $builder = new DataTypeBuilder();
+        return $builder->build($parsed);
+    }
+    
+    protected function buildDefaultValue($parsed) {
+        $builder = new DefaultValueBuilder();
+        return $builder->build($parsed);
+    }
+
+    protected function buildCharacterSet($parsed) {
+        if ($parsed['expr_type'] !== ExpressionType::CHARSET) {
+            return "";
+        }
+        return $parsed['base_expr'];
+    }
+
+    protected function buildCollation($parsed) {
+        if ($parsed['expr_type'] !== ExpressionType::COLLATE) {
+            return "";
+        }
+        return $parsed['base_expr'];
+    }
+
+    protected function buildComment($parsed) {
+        if ($parsed['expr_type'] !== ExpressionType::COMMENT) {
+            return "";
+        }
+        return $parsed['base_expr'];
+    }
+
+    public function build(array $parsed) {
         if ($parsed['expr_type'] !== ExpressionType::COLUMN_TYPE) {
             return "";
         }
@@ -68,47 +106,18 @@ class ColumnTypeBuilder implements Builder
             $sql .= $this->buildReserved($v);
             $sql .= $this->buildDefaultValue($v);
             $sql .= $this->buildCharacterSet($v);
+            $sql .= $this->buildCollation($v);
+            $sql .= $this->buildComment($v);
 
             if ($len == strlen($sql)) {
                 throw new UnableToCreateSQLException('CREATE TABLE column-type subtree', $k, $v, 'expr_type');
             }
-
+    
             $sql .= " ";
         }
-
+    
         return substr($sql, 0, -1);
     }
-
-    protected function buildDataType($parsed)
-    {
-        $builder = new DataTypeBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildColumnTypeBracketExpression($parsed)
-    {
-        $builder = new ColumnTypeBracketExpressionBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildReserved($parsed)
-    {
-        $builder = new ReservedBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildDefaultValue($parsed)
-    {
-        $builder = new DefaultValueBuilder();
-        return $builder->build($parsed);
-    }
-
-    protected function buildCharacterSet($parsed)
-    {
-        if ($parsed['expr_type'] !== ExpressionType::CHARSET) {
-            return "";
-        }
-        return $parsed['base_expr'];
-    }
-
+    
 }
+?>

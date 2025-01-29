@@ -66,7 +66,7 @@ abstract class AbstractProcessor
      *
      * @param Options $options
      */
-    public function __construct(Options $options = null)
+    public function __construct(?Options $options = null)
     {
         if (!$options) {
             $options = new Options(array());

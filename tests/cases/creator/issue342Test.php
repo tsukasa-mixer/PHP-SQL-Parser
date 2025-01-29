@@ -4,9 +4,9 @@ namespace PHPSQLParser\Test\Creator;
 use PHPSQLParser\PHPSQLParser;
 use PHPSQLParser\PHPSQLCreator;
 
-class issue342Test extends \PHPUnit_Framework_TestCase
+class issue342Test extends \PHPUnit\Framework\TestCase
 {
-    public function testIssue299()
+    public function testIssue342()
     {
         $sql = 'SELECT if(true,true,false) FROM t';
 
